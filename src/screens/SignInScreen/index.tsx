@@ -3,7 +3,7 @@ import {Text, View} from 'react-native';
 function SingInScreen() {
   return (
     <View>
-      <Text style={{color: '#000'}}>22323</Text>
+      <Text style={{color: '#000'}}>2232sdasd3</Text>
     </View>
   );
 }
