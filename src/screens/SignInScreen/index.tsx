@@ -1,10 +1,9 @@
-import { Text, View } from "react-native";
+import {Text, View} from 'react-native';
 
-function SingInScreen(){
-
-  return(
+function SingInScreen() {
+  return (
     <View>
-      <Text>App</Text>
+      <Text style={{color: '#000'}}>22323</Text>
     </View>
   );
 }
