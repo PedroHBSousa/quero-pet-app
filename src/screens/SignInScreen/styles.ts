@@ -12,7 +12,20 @@ const styles = StyleSheet.create({
         width: 180,
         height: 180,
         resizeMode: 'contain',
-        marginTop:100,
+        marginTop: 100,
+    },
+    textPassword: {
+        fontFamily: theme.fonts.REGULAR,
+        color: theme.colors.TEXT,
+        fontSize: 14,
+        textAlign: "center",
+        marginTop: 20
+    },
+    svg: {
+        position: 'absolute',
+        top: -40,
+        left: -100,
+
     }
 
 })

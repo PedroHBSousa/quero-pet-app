@@ -4,7 +4,7 @@ import theme from "../../../global/styles/theme";
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    width: '90%',
     marginVertical: 10
   },
   label: {

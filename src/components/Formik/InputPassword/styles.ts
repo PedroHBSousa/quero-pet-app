@@ -4,7 +4,7 @@ import theme from "../../../global/styles/theme";
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    width: '90%',
     marginVertical: 10,
   },
   label: {
@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
     color: theme.colors.TEXT,
     borderColor: theme.colors.SHAPE,
     borderWidth: 1.5,
-
     padding: 16,
     paddingRight: 56,
     borderRadius: 15,
