@@ -8,24 +8,30 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
     },
-    logo: {
-        width: 180,
-        height: 180,
+    svgLogo: {
         resizeMode: 'contain',
         marginTop: 100,
+        left: -15,
     },
     textPassword: {
-        fontFamily: theme.fonts.REGULAR,
+        fontFamily: 'Poppins-Thin',
         color: theme.colors.TEXT,
         fontSize: 14,
         textAlign: "center",
-        marginTop: 20
+        marginTop: 20, 
+
     },
     svg: {
         position: 'absolute',
-        top: -40,
-        left: -100,
-
+        top: 540,
+        left: 0,
+    },
+    loginContainer: {
+        width: '100%',
+        alignItems:'center',
+        flex: 1,
+        marginBottom: 50,
+        top: -50,
     }
 
 })

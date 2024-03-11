@@ -9,7 +9,7 @@ const theme = {
     SHAPE: '#f7f8fa',
     BACKGROUND: '#ffffff',
     PLACEHOLDER: '#969CB2',
-    TESTE: '#B98B73',
+    TESTE: '#DDBEA9',
     TESTE2: '#A5A58D',
 
     TEXT: '#363F5F',
