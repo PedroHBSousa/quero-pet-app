@@ -3,7 +3,7 @@ import theme from "../../global/styles/theme";
 
 const styles = StyleSheet.create({
   button: {
-    width: "90%",
+    width: "100%",
     height: 56,
     alignContent: 'center',
     borderRadius: 30,
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: theme.fonts.REGULAR,
-    fontSize: 14,
+    fontSize: 15,
     color: theme.colors.SHAPE,
     lineHeight: 18
   },
