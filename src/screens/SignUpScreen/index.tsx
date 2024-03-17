@@ -5,23 +5,35 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView} from 'react-native-gesture-handler';
 import theme from '../../global/styles/theme';
 import Input from '../../components/Formik/Input';
+import InputSex from '../../components/Formik/InputSex';
 import InputPassword from '../../components/Formik/InputPassword';
 import Header from '../../components/Header';
 import InputMask from '../../components/Formik/InputMask';
 import {Formik} from 'formik';
 import Button from '../../components/Button';
-import {useState} from 'react';
+import {useState, useRef} from 'react';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../routes/types/navigation';
 
 interface FormikValues {
   cpf: string;
   birth: string;
   password: string;
+  sex: string;
 }
 
-function SignUpScreen() {
-  const [isLoading, setIsloading] = useState(false);
+type SignUpScreenProp = {
+  navigation: NativeStackNavigationProp<RootStackParamList, 'SignUpScreen'>;
+};
 
-  function onSubmit(values: FormikValues) {}
+function SignUpScreen({navigation}: SignUpScreenProp) {
+  const formRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  function onSubmit(values: FormikValues) {
+    setIsLoading(true);
+    navigation.navigate('SignUpAddressScreen');
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -40,11 +52,13 @@ function SignUpScreen() {
               Cada cadastro é uma nova oportunidade de mudar uma vida.
             </Text>
             <Formik
+              ref={formRef}
               onSubmit={onSubmit}
               initialValues={{
                 cpf: '',
                 birth: '',
                 password: '',
+                sex: '',
               }}>
               {({
                 handleChange,
@@ -92,6 +106,12 @@ function SignUpScreen() {
                     label={'Confirmar senha'}
                     placeholder={'Confirme sua senha'}
                     onChangeText={handleChange('confirm_password')}
+                  />
+                  <InputSex
+                    label={'Sexo'}
+                    style={{marginTop: 15}}
+                    value={values.sex}
+                    formRef={formRef}
                   />
                   <Button
                     isLoading={isLoading}

@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 560,
     left: 0,
+    zIndex: -1,
   },
   loginContainer: {
     width: '100%',
