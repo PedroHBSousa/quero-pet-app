@@ -16,10 +16,13 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../routes/types/navigation';
 
 interface FormikValues {
+  name: string;
   cpf: string;
   birth: string;
   password: string;
+  confirm_password: string;
   sex: string;
+  email: string;
 }
 
 type SignUpScreenProp = {
@@ -59,6 +62,9 @@ function SignUpScreen({navigation}: SignUpScreenProp) {
                 birth: '',
                 password: '',
                 sex: '',
+                confirm_password: '',
+                email: '',
+                name: '',
               }}>
               {({
                 handleChange,
@@ -72,18 +78,28 @@ function SignUpScreen({navigation}: SignUpScreenProp) {
                   <Input
                     label={'E-mail'}
                     placeholder={'Digite seu e-mail'}
+                    value={values.email}
+                    error={errors.email ?? undefined}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
                     containerStyle={{marginTop: 0}}
                   />
 
                   <Input
                     label={'Nome completo'}
                     placeholder={'Digite seu nome'}
+                    value={values.name}
+                    error={errors.name ?? undefined}
+                    onBlur={handleBlur('name')}
+                    onChangeText={handleChange('name')}
                   />
 
                   <InputMask
                     mask={Masks.BRL_CPF}
                     label={'CPF'}
                     placeholder={'Digite seu CPF'}
+                    error={errors.cpf ?? undefined}
+                    onBlur={handleBlur('cpf')}
                     value={values.cpf}
                     onChangeText={handleChange('cpf')}
                     keyboardType="numeric"
@@ -94,18 +110,26 @@ function SignUpScreen({navigation}: SignUpScreenProp) {
                     label={'Data de nascimento'}
                     value={values.birth}
                     onChangeText={handleChange('birth')}
+                    error={errors.birth ?? undefined}
+                    onBlur={handleBlur('birth')}
                     placeholder={'Digite sua data de nascimento'}
                     keyboardType="numeric"
                   />
                   <InputPassword
                     label={'Senha'}
                     placeholder={'Digite sua senha'}
+                    value={values.password}
                     onChangeText={handleChange('password')}
+                    error={errors.password ?? undefined}
+                    onBlur={handleBlur('password')}
                   />
                   <InputPassword
                     label={'Confirmar senha'}
                     placeholder={'Confirme sua senha'}
+                    value={values.confirm_password}
+                    error={errors.confirm_password ?? undefined}
                     onChangeText={handleChange('confirm_password')}
+                    onBlur={handleBlur('confirm_password')}
                   />
                   <InputSex
                     label={'Sexo'}
