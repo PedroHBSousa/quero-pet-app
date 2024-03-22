@@ -1,19 +1,19 @@
-import {View, Text, StatusBar} from 'react-native';
-import {Masks} from 'react-native-mask-input';
+import { View, Text, StatusBar } from 'react-native';
+import { Masks } from 'react-native-mask-input';
 import styles from './styles';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {ScrollView} from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScrollView } from 'react-native-gesture-handler';
 import theme from '../../global/styles/theme';
 import Input from '../../components/Formik/Input';
 import InputSex from '../../components/Formik/InputSex';
 import InputPassword from '../../components/Formik/InputPassword';
 import Header from '../../components/Header';
 import InputMask from '../../components/Formik/InputMask';
-import {Formik} from 'formik';
+import { Formik } from 'formik';
 import Button from '../../components/Button';
-import {useState, useRef} from 'react';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../../routes/types/navigation';
+import { useState, useRef } from 'react';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../routes/types/navigation';
 
 interface FormikValues {
   name: string;
@@ -29,7 +29,7 @@ type SignUpScreenProp = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'SignUpScreen'>;
 };
 
-function SignUpScreen({navigation}: SignUpScreenProp) {
+function SignUpScreen({ navigation }: SignUpScreenProp) {
   const formRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -51,12 +51,14 @@ function SignUpScreen({navigation}: SignUpScreenProp) {
         <View style={styles.main}>
           <View>
             <Text style={styles.titleXl}>Cadastre-se para começar.</Text>
-            <Text style={[styles.text, {marginBottom: 45}]}>
+            <Text style={[styles.text, { marginBottom: 45 }]}>
               Cada cadastro é uma nova oportunidade de mudar uma vida.
             </Text>
             <Formik
               ref={formRef}
               onSubmit={onSubmit}
+              validateOnChange={false}
+              validateOnBlur={false}
               initialValues={{
                 cpf: '',
                 birth: '',
@@ -76,13 +78,15 @@ function SignUpScreen({navigation}: SignUpScreenProp) {
               }) => (
                 <>
                   <Input
+                    
                     label={'E-mail'}
                     placeholder={'Digite seu e-mail'}
                     value={values.email}
                     error={errors.email ?? undefined}
                     onChangeText={handleChange('email')}
                     onBlur={handleBlur('email')}
-                    containerStyle={{marginTop: 0}}
+                    containerStyle={{ marginTop: 0 }}
+                    id="email"
                   />
 
                   <Input
@@ -92,6 +96,7 @@ function SignUpScreen({navigation}: SignUpScreenProp) {
                     error={errors.name ?? undefined}
                     onBlur={handleBlur('name')}
                     onChangeText={handleChange('name')}
+                    id="name"
                   />
 
                   <InputMask
@@ -133,14 +138,14 @@ function SignUpScreen({navigation}: SignUpScreenProp) {
                   />
                   <InputSex
                     label={'Sexo'}
-                    style={{marginTop: 15}}
+                    style={{ marginTop: 15 }}
                     value={values.sex}
                     formRef={formRef}
                   />
                   <Button
                     isLoading={isLoading}
                     title={'Próximo passo'}
-                    style={{marginTop: 30}}
+                    style={{ marginTop: 30 }}
                     onPress={() => {
                       if (!isLoading) {
                         handleSubmit();

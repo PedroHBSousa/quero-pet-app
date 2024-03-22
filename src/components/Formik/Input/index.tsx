@@ -1,32 +1,29 @@
 import React from 'react';
-import { 
-  View, 
-  Text, 
-  TextInput, 
-  TextInputProps, 
-  ViewStyle, 
+import {
+  View,
+  Text,
+  TextInput,
+  TextInputProps,
+  ViewStyle,
   TextStyle
 } from 'react-native';
 
 import styles from './styles';
 import theme from '../../../global/styles/theme';
 
-interface InputProps {
-    label?: string;
-    error?: string;
-    style?: TextStyle;
-    containerStyle?: ViewStyle;
-    editable?: boolean;
-    [key: string]: any; // Allow any other props
-  }
+interface InputProps extends TextInputProps {
+  label?: string;
+  error?: string;
+  containerStyle?: ViewStyle;
+}
 
-const Input: React.FC<InputProps> = ({ 
-  label, 
+const Input: React.FC<InputProps> = ({
+  label,
   error,
   style,
   containerStyle,
   editable = true,
-  ...rest 
+  ...rest
 }) => {
   return (
     <View style={[styles.container, containerStyle ? containerStyle : {}]}>
@@ -39,7 +36,7 @@ const Input: React.FC<InputProps> = ({
           style ? style : {},
           error ? styles.inputError : {},
         ]}
-        {...rest} 
+        {...rest}
       />
 
       {error && <Text style={styles.textError}>{error}</Text>}

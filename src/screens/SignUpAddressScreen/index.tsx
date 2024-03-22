@@ -144,7 +144,7 @@ function SignUpAddressScreen({navigation}: SignUpAddressScreen) {
                   error={errors.state ?? undefined}
                   onChangeText={handleChange('state')}
                   onBlur={handleBlur('state')}
-                  name="state"
+
                 />
 
                 <Input
@@ -154,7 +154,7 @@ function SignUpAddressScreen({navigation}: SignUpAddressScreen) {
                   error={errors.city ?? undefined}
                   onChangeText={handleChange('city')}
                   onBlur={handleBlur('city')}
-                  name="city"
+                  id="city"
                 />
 
                 <Input
@@ -164,7 +164,7 @@ function SignUpAddressScreen({navigation}: SignUpAddressScreen) {
                   error={errors.neighborhood ?? undefined}
                   onChangeText={handleChange('neighborhood')}
                   onBlur={handleBlur('neighborhood')}
-                  name="neighborhood"
+
                 />
 
                 <Input
@@ -174,7 +174,7 @@ function SignUpAddressScreen({navigation}: SignUpAddressScreen) {
                   error={errors.street ?? undefined}
                   onChangeText={handleChange('street')}
                   onBlur={handleBlur('street')}
-                  name="street"
+
                 />
 
                 <Input
@@ -185,7 +185,6 @@ function SignUpAddressScreen({navigation}: SignUpAddressScreen) {
                   onChangeText={handleChange('number')}
                   onBlur={handleBlur('number')}
                   keyboardType="numeric"
-                  name="number"
                 />
 
                 <Input
@@ -195,7 +194,7 @@ function SignUpAddressScreen({navigation}: SignUpAddressScreen) {
                   error={errors.complement ?? undefined}
                   onChangeText={handleChange('complement')}
                   onBlur={handleBlur('complement')}
-                  name="complement"
+
                 />
 
                 <Button
