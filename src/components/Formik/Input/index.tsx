@@ -1,19 +1,12 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TextInputProps,
-  ViewStyle,
-  TextStyle
-} from 'react-native';
+import {View, Text, TextInput, TextInputProps, ViewStyle} from 'react-native';
 
 import styles from './styles';
 import theme from '../../../global/styles/theme';
 
 interface InputProps extends TextInputProps {
-  label?: string;
   error?: string;
+  label?: string;
   containerStyle?: ViewStyle;
 }
 
@@ -31,10 +24,12 @@ const Input: React.FC<InputProps> = ({
 
       <TextInput
         placeholderTextColor={theme.colors.PLACEHOLDER}
+        editable={editable}
         style={[
           styles.input,
           style ? style : {},
           error ? styles.inputError : {},
+          editable === false ? {} : {},
         ]}
         {...rest}
       />
@@ -42,6 +37,6 @@ const Input: React.FC<InputProps> = ({
       {error && <Text style={styles.textError}>{error}</Text>}
     </View>
   );
-}
+};
 
 export default Input;

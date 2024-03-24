@@ -11,7 +11,7 @@ import {
 import styles from './styles';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../routes/types/navigation';
-import {Formik} from 'formik';
+import {Formik, FormikProps} from 'formik';
 import Button from '../../components/Button';
 import Header from '../../components/Header';
 import theme from '../../global/styles/theme';
@@ -39,11 +39,13 @@ type SignUpAddressScreen = {
 
 function SignUpAddressScreen({navigation}: SignUpAddressScreen) {
   const [isLoadingAddress, setIsLoadingAddress] = useState(false);
-  const formRef = useRef(null);
+
+  const formRef = useRef<FormikProps<FormikValues>>(null);
+
   const scrollRef = useRef(null);
 
   function onSubmit(values: FormikValues) {
-    navigation.navigate('SignInScreen');
+    navigation.navigate('SignUpPhotoScreen');
   }
 
   async function autoFillAddressByZipCode(text: string) {
@@ -87,7 +89,7 @@ function SignUpAddressScreen({navigation}: SignUpAddressScreen) {
           </View>
 
           <Formik
-            ref={formRef}
+            innerRef={formRef}
             onSubmit={onSubmit}
             validateOnChange={false}
             validateOnBlur={false}
@@ -144,7 +146,6 @@ function SignUpAddressScreen({navigation}: SignUpAddressScreen) {
                   error={errors.state ?? undefined}
                   onChangeText={handleChange('state')}
                   onBlur={handleBlur('state')}
-
                 />
 
                 <Input
@@ -164,7 +165,6 @@ function SignUpAddressScreen({navigation}: SignUpAddressScreen) {
                   error={errors.neighborhood ?? undefined}
                   onChangeText={handleChange('neighborhood')}
                   onBlur={handleBlur('neighborhood')}
-
                 />
 
                 <Input
@@ -174,7 +174,6 @@ function SignUpAddressScreen({navigation}: SignUpAddressScreen) {
                   error={errors.street ?? undefined}
                   onChangeText={handleChange('street')}
                   onBlur={handleBlur('street')}
-
                 />
 
                 <Input
@@ -194,7 +193,6 @@ function SignUpAddressScreen({navigation}: SignUpAddressScreen) {
                   error={errors.complement ?? undefined}
                   onChangeText={handleChange('complement')}
                   onBlur={handleBlur('complement')}
-
                 />
 
                 <Button
