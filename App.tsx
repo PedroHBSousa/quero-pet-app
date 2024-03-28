@@ -9,8 +9,8 @@ function App() {
   return (
       <GestureHandlerRootView style={{ flex: 1 }}>
         <StatusBar
-          barStyle="light-content"
-          backgroundColor={theme.colors.TESTE}
+          barStyle="dark-content"
+          backgroundColor= "#FFF"
         />
         <Host>
         <Routes />
