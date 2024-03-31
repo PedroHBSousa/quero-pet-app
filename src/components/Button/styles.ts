@@ -1,21 +1,21 @@
-import { StyleSheet } from "react-native";
-import theme from "../../global/styles/theme";
+import {StyleSheet} from 'react-native';
+import theme from '../../global/styles/theme';
 
 const styles = StyleSheet.create({
   button: {
-    width: "100%",
+    width: '100%',
     height: 56,
     alignContent: 'center',
     borderRadius: 30,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: theme.colors.PRIMARY,
   },
   title: {
     fontFamily: theme.fonts.REGULAR,
     fontSize: 15,
     color: theme.colors.SHAPE,
-    lineHeight: 18
+    lineHeight: 18,
   },
   primary: {
     backgroundColor: theme.colors.PRIMARY,

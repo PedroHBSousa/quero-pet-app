@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
   svgLogo: {
     resizeMode: 'contain',
     marginTop: 100,
-
   },
   textPassword: {
     fontFamily: theme.fonts.LIGHT,
@@ -21,7 +20,7 @@ const styles = StyleSheet.create({
   },
   svgSignUp: {
     position: 'absolute',
-    top: 600,
+    top: 550,
     zIndex: -1,
   },
   loginContainer: {
