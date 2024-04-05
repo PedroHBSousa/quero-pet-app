@@ -5,6 +5,7 @@ import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import SignUpAddressScreen from '../screens/SignUpAddressScreen';
 import SignUpPhotoScreen from '../screens/SignUpPhotoScreen';
+import HomeScreen from '../screens/HomeScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -21,6 +22,7 @@ export function AuthRoutes() {
         component={SignUpAddressScreen}
       />
       <Stack.Screen name="SignUpPhotoScreen" component={SignUpPhotoScreen} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
     </Stack.Navigator>
   );
 }

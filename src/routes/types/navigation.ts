@@ -3,5 +3,5 @@ export type RootStackParamList = {
   SignUpScreen: undefined;
   SignUpAddressScreen: undefined;
   SignUpPhotoScreen: undefined;
-  // Outras rotas...
+  HomeScreen: undefined;
 };
