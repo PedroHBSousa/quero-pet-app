@@ -4,6 +4,7 @@ import {
   SafeAreaView,
   Text,
   TouchableOpacity,
+  StatusBar
 } from 'react-native';
 import styles from './styles';
 import theme from '../../global/styles/theme';
@@ -19,9 +20,14 @@ type HomeScreenProp = {
 
 function HomeScreen({ navigation }: HomeScreenProp) {
   return (
+    
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ flex: 1 }}>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={theme.colors.TESTE}
+      />
+        <View style={{ flex: 1, marginTop: 120}}>
           <Text style={styles.titleCategory}>Categorias</Text>
           <ScrollView
             showsHorizontalScrollIndicator={false}

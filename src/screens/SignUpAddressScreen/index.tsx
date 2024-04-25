@@ -19,6 +19,25 @@ import Input from '../../components/Formik/Input';
 import InputMask from '../../components/Formik/InputMask';
 import {Masks} from 'react-native-mask-input';
 import axios from 'axios';
+import * as Yup from 'yup';
+import { setValidationErrors } from '../../utils/yupUtils';
+
+
+
+const schema = Yup.object().shape({
+  zip_code: Yup.string()
+    .required('O CEP é obrigatório'),
+  state: Yup.string()
+    .required('O estado é obrigatório'),
+  city: Yup.string()
+    .required('A cidade é obrigatória'),
+  neighborhood: Yup.string()
+    .required('O bairro é obrigatório'),
+  street: Yup.string()  
+    .required('A rua é obrigatória'),
+  number: Yup.string()
+    .required('O número é obrigatório'),
+});
 
 interface FormikValues {
   zip_code: string;
@@ -44,8 +63,27 @@ function SignUpAddressScreen({navigation}: SignUpAddressScreen) {
 
   const scrollRef = useRef(null);
 
+  const [isLoading, setIsLoading] = useState(false);
+  
   function onSubmit(values: FormikValues) {
-    navigation.navigate('SignUpPhotoScreen');
+    setIsLoading(true);
+    try {
+      schema.validateSync(values, { abortEarly: false });
+
+      Keyboard.dismiss();
+
+      navigation.navigate('SignUpPhotoScreen');
+
+    } catch (errors) {
+      if(errors instanceof Yup.ValidationError) {
+        setValidationErrors(formRef as any, errors);
+      }
+  
+      (scrollRef.current as ScrollView | null)?.scrollTo({ y: 0, animated: true });
+    } finally {
+      setIsLoading(false);
+    }
+
   }
 
   async function autoFillAddressByZipCode(text: string) {

@@ -1,23 +1,19 @@
-import { View, Text, ViewStyle, StyleProp} from 'react-native';
+import { View, Text, TouchableOpacity, Image} from 'react-native';
 import styles from './styles';
-
-interface ExtendedViewStyle extends ViewStyle {
-    shadowColor?: string;
-    backgroundColor?: string; // Adicionando propriedade backgroundColor
-    borderBottomWidth?: number; // Adicionando propriedade borderBottomWidth
-    borderBottomColor?: string; // Adicionando propriedade borderBottomColor
-  }
 
 interface HeaderHomeProps {
     name: string;
-    headerStyle?: StyleProp<ExtendedViewStyle>;
 }
+
+const profileImage = require("../../components/HeaderHome/teste.png");
 
 const HeaderHome: React.FC<HeaderHomeProps> = (props) => {
     return(
-        <View style={props.headerStyle} >
-            <Text style={{color: "#000"}}>{props.name}</Text>
+        <View style={styles.container} >
+            <Text style={styles.nameProfile}>Olá, {props.name}</Text>
+            <Image source={profileImage} style={styles.profileImage}/>
         </View>
     )
+
 }
 export default HeaderHome;

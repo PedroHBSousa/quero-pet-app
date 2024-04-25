@@ -8,7 +8,7 @@ import SignUpPhotoScreen from '../screens/SignUpPhotoScreen';
 import HomeScreen from '../screens/HomeScreen';
 import HeaderHome from '../components/HeaderHome';
 import { StyleSheet } from 'react-native';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -17,23 +17,18 @@ export function AuthRoutes() {
     <Stack.Navigator
       screenOptions={{
         headerShown: true,
+        headerTransparent: true,
       }}>
-      <Stack.Screen name="SignInScreen" component={SignInScreen} />
-      <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-      <Stack.Screen
-        name="SignUpAddressScreen"
-        component={SignUpAddressScreen}
-      />
-      <Stack.Screen name="SignUpPhotoScreen" component={SignUpPhotoScreen} />
+      <Stack.Screen name="SignInScreen" component={SignInScreen} options={{headerShown:false}} />
+      <Stack.Screen name="SignUpScreen" component={SignUpScreen} options={{headerShown:false}} />
+      <Stack.Screen name="SignUpAddressScreen" component={SignUpAddressScreen} options={{headerShown:false}}/>
+      <Stack.Screen name="SignUpPhotoScreen" component={SignUpPhotoScreen} options={{headerShown:false}} />
       <Stack.Screen name="HomeScreen" component={HomeScreen} options={{
-        headerTitle: () => <HeaderHome name="Pets Carentes" />,
-        headerStyle:{
-          backgroundColor: 'white',
-          borderBottomWidth: 1,
-          borderBottomColor: 'lightgray',
-          paddingVertical: 10,
-          paddingHorizontal: 20,
-        },
+        header: () => (
+          <HeaderHome
+            name="Lucas"
+            
+          />)
       }} />
     </Stack.Navigator>
   );

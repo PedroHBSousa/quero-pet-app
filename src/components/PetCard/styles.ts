@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
         marginRight:20
     },
     cardElevetad: {
-        backgroundColor: '#FFD166',
+        backgroundColor: theme.colors.TESTE,
         elevation: 3
     },
     cardImage: {
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     },
     cardTitle: {
         fontSize: 18,
-        color: "#073B4C",
+        color: theme.colors.YELLOW,
         fontFamily: theme.fonts.MEDIUM,
     },
     cardBody: {
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     cardSubTitle: {
-        color: "#073B4C",
+        color: theme.colors.YELLOW,
         fontFamily: theme.fonts.LIGHT,
         fontSize: 14,
         lineHeight: 20,

@@ -10,7 +10,9 @@ const theme = {
     BACKGROUND: '#ffffff',
     PLACEHOLDER: '#969CB2',
     TESTE: '#073B4C',
-    TESTE2: '#A5A58D',
+    YELLOW: '#FFD166',
+    GREEN: '#06D6A0',
+    LIGHT_BLUE: '#118AB2',
 
     TEXT: '#363F5F',
     TEXT_LIGHT: '#969CB2',

@@ -2,6 +2,8 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import theme from '../../global/styles/theme';
+
 function PetCard() {
     return (
         <View>
@@ -13,10 +15,10 @@ function PetCard() {
                             <Text style={styles.cardTitle}>
                                 Denguinho
                             </Text>
-                            <MaterialIcons name="male" size={32} color="#073B4C" style={styles.icon} />
+                            <MaterialIcons name="male" size={32} color={theme.colors.YELLOW} style={styles.icon} />
                         </View>
                         <View style={styles.cardDescription}>
-                            <FontAwesome5 name="birthday-cake" size={15} color="#073B4C" style={styles.icon} />
+                            <FontAwesome5 name="birthday-cake" size={15} color={theme.colors.YELLOW} style={styles.icon} />
                             <Text style={styles.cardSubTitle}>18 meses</Text>
                         </View>
                     </View>
