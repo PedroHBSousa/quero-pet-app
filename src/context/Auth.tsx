@@ -1,20 +1,17 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, ReactNode} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../services/api';
 import Toast from  '../utils/toastUtils';
 import { buildFormDataSignUp } from '../utils/authUtils';
 
+
+export const AuthContext = createContext({});
+
 interface AuthProviderProps {
-    children: React.ReactNode;
-}
+    children: ReactNode;
+  }
 
-interface AuthContextValue {
-    signIn: (data: SignInData) => Promise<ApiResponse>;
-}
-
-export const AuthContext = createContext<AuthContextValue | undefined>(undefined);
-
-
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const [token, setToken] = useState(null);
     const [user, setUser] = useState(null);
@@ -44,6 +41,19 @@ export const AuthProvider = ({ children }) => {
             Toast.show('Problemas de conexão com o servidor.');
         }
     }
+    async function saveSignIn(response) {
+        const { token, user } = response.data;
+    
+        const plainTextToken = token.plainTextToken;
+    
+        setUser(user);
+        setToken(plainTextToken);
+    
+        await AsyncStorage.setItem('@cm:token', plainTextToken);
+        await AsyncStorage.setItem('@cm:user', user.id.toString());
+    
+        api.defaults.headers.common['Authorization'] = `Bearer ${plainTextToken}`;
+      }
     
     return (
         <AuthContext.Provider value={{ signIn }}>
