@@ -1,16 +1,15 @@
 import React, {createContext, useState, ReactNode} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../services/api';
-import Toast from '../utils/toastUtils';
-import {buildFormDataSignUp} from '../utils/authUtils';
-import {AxiosError, AxiosResponse} from 'axios';
+import {AxiosResponse} from 'axios';
 
 export const AuthContext = createContext<AuthContextDataType>(
   {} as AuthContextDataType,
 );
 
 interface AuthContextDataType {
+  isAuthenticated: boolean;
   user: UserType | null;
+  token: string | null;
   signIn: (data: SignInData) => Promise<AxiosResponse<SignInResponse>>;
 }
 
@@ -38,16 +37,14 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
 
   async function signIn(data: SignInData) {
     try {
-      const response = await api.post<SignInResponse>('/login', data);
+      const response = await api.post<SignInResponse>('/sign-in', data);
 
-      if (response.status === 200) {
+      if (response.status == 200 || response.status == 201) {
         saveSignIn(response);
       }
 
       return response;
     } catch (error) {
-      //   showMessageError(error);
-
       throw error;
     }
   }
@@ -58,27 +55,19 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
     setUser(user);
     setToken(plain_text_token);
 
-    await AsyncStorage.setItem('@qp:token', plain_text_token);
-    await AsyncStorage.setItem('@qp:user', user.id.toString());
+    // await AsyncStorage.setItem('@qp:token', plain_text_token);
+    // await AsyncStorage.setItem('@qp:user', user.id.toString());
 
     api.defaults.headers.common['Authorization'] = `Bearer ${plain_text_token}`;
   }
-
-  //   function showMessageError(error) {
-  //     const {message} = error.response.data;
-
-  //     if (message) {
-  //       Toast.show(message);
-  //     } else {
-  //       Toast.show('Problemas de conexão com o servidor.');
-  //     }
-  //   }
 
   return (
     <AuthContext.Provider
       value={{
         signIn,
         user,
+        token,
+        isAuthenticated: token ? true : false,
       }}>
       {children}
     </AuthContext.Provider>

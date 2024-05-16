@@ -22,9 +22,9 @@ type SignInScreenProp = {
 };
 
 function SingInScreen({navigation}: SignInScreenProp) {
-  const {signIn} = useContext(AuthContext);
-
   const [isLoading, setIsLoading] = useState(false);
+
+  const {signIn} = useContext(AuthContext);
   const formRef = useRef<FormikProps<FormikValues>>(null);
 
   const handleSignUpScreen = () => {
@@ -36,8 +36,7 @@ function SingInScreen({navigation}: SignInScreenProp) {
   // };
 
   async function onSubmit(values: FormikValues) {
-    const response = await signIn(values).catch(error => console.log(error));
-    // console.log(response.data);
+    await signIn(values);
   }
 
   return (
