@@ -1,15 +1,15 @@
-import {Text, View, Image, StatusBar} from 'react-native';
 import React, {useContext, useState, useRef} from 'react';
+import {Text, View, StatusBar} from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+
 import styles from './styles';
 import Input from '../../components/Formik/Input';
 import InputPassword from '../../components/Formik/InputPassword';
 import Button from '../../components/Button';
 import Logotipo from '../../assets/svg/Logotipo.svg';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../../routes/types/navigation';
-import {ScrollView} from 'react-native-gesture-handler';
-import theme from '../../global/styles/theme';
-import {AuthContext} from '../../contexts/Auth';
+import {RootStackParamList} from '../../routes/types';
+import {AuthContext} from '../../contexts/AuthContext';
 import {Formik, FormikProps} from 'formik';
 
 interface FormikValues {
@@ -21,22 +21,23 @@ type SignInScreenProp = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'SignInScreen'>;
 };
 
-function SingInScreen({navigation}: SignInScreenProp) {
+function SingInScreen(props: SignInScreenProp) {
+  const {navigation} = props;
+
   const [isLoading, setIsLoading] = useState(false);
 
   const {signIn} = useContext(AuthContext);
   const formRef = useRef<FormikProps<FormikValues>>(null);
 
-  const handleSignUpScreen = () => {
-    navigation.navigate('SignUpScreen');
-  };
-
-  // const handleHomeScreen = () => {
-  //   navigation.navigate('HomeScreen');
-  // };
-
   async function onSubmit(values: FormikValues) {
-    await signIn(values);
+    setIsLoading(true);
+    try {
+      await signIn(values);
+    } catch (error) {
+      console.log('An error occurred while trying to sign in: ', error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -51,8 +52,8 @@ function SingInScreen({navigation}: SignInScreenProp) {
           innerRef={formRef}
           onSubmit={onSubmit}
           initialValues={{
-            email: '',
-            password: '',
+            email: 'root@gmail.com',
+            password: 'root',
           }}>
           {({values, handleBlur, handleChange, handleSubmit}) => (
             <>
@@ -73,6 +74,7 @@ function SingInScreen({navigation}: SignInScreenProp) {
                   onChangeText={handleChange('password')}
                 />
                 <Button
+                  isLoading={isLoading}
                   title={'Entrar'}
                   style={{marginTop: 10}}
                   onPress={handleSubmit}
@@ -80,7 +82,7 @@ function SingInScreen({navigation}: SignInScreenProp) {
                 <Text
                   style={styles.textPassword}
                   onPress={() => {
-                    handleSignUpScreen();
+                    navigation.navigate('SignUpScreen');
                   }}>
                   Abrir Conta
                 </Text>

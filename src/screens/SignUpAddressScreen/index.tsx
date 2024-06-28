@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import styles from './styles';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../../routes/types/navigation';
+import {RootStackParamList} from '../../routes/types/types';
 import {Formik, FormikProps} from 'formik';
 import Button from '../../components/Button';
 import Header from '../../components/Header';
@@ -20,23 +20,15 @@ import InputMask from '../../components/Formik/InputMask';
 import {Masks} from 'react-native-mask-input';
 import axios from 'axios';
 import * as Yup from 'yup';
-import { setValidationErrors } from '../../utils/yupUtils';
-
-
+import {setValidationErrors} from '../../utils/yupUtils';
 
 const schema = Yup.object().shape({
-  zip_code: Yup.string()
-    .required('O CEP é obrigatório'),
-  state: Yup.string()
-    .required('O estado é obrigatório'),
-  city: Yup.string()
-    .required('A cidade é obrigatória'),
-  neighborhood: Yup.string()
-    .required('O bairro é obrigatório'),
-  street: Yup.string()  
-    .required('A rua é obrigatória'),
-  number: Yup.string()
-    .required('O número é obrigatório'),
+  zip_code: Yup.string().required('O CEP é obrigatório'),
+  state: Yup.string().required('O estado é obrigatório'),
+  city: Yup.string().required('A cidade é obrigatória'),
+  neighborhood: Yup.string().required('O bairro é obrigatório'),
+  street: Yup.string().required('A rua é obrigatória'),
+  number: Yup.string().required('O número é obrigatório'),
 });
 
 interface FormikValues {
@@ -64,26 +56,27 @@ function SignUpAddressScreen({navigation}: SignUpAddressScreen) {
   const scrollRef = useRef(null);
 
   const [isLoading, setIsLoading] = useState(false);
-  
+
   function onSubmit(values: FormikValues) {
     setIsLoading(true);
     try {
-      schema.validateSync(values, { abortEarly: false });
+      schema.validateSync(values, {abortEarly: false});
 
       Keyboard.dismiss();
 
       navigation.navigate('SignUpPhotoScreen');
-
     } catch (errors) {
-      if(errors instanceof Yup.ValidationError) {
+      if (errors instanceof Yup.ValidationError) {
         setValidationErrors(formRef as any, errors);
       }
-  
-      (scrollRef.current as ScrollView | null)?.scrollTo({ y: 0, animated: true });
+
+      (scrollRef.current as ScrollView | null)?.scrollTo({
+        y: 0,
+        animated: true,
+      });
     } finally {
       setIsLoading(false);
     }
-
   }
 
   async function autoFillAddressByZipCode(text: string) {

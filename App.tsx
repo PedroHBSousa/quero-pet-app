@@ -1,9 +1,9 @@
 import {StatusBar, Text} from 'react-native';
 import {Host} from 'react-native-portalize';
-import theme from './src/global/styles/theme';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import theme from './src/global/styles/theme';
 import Routes from './src/routes';
-import {AuthProvider} from './src/contexts/Auth';
+import {AuthProvider} from './src/contexts/AuthContext';
 
 function App() {
   return (

@@ -1,7 +1,7 @@
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import styles from './styles';
 import {useContext} from 'react';
-import {AuthContext} from '../../contexts/Auth';
+import {AuthContext} from '../../contexts/AuthContext';
 
 const profileImage = require('../../components/HeaderHome/teste.png');
 

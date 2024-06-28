@@ -13,10 +13,10 @@ const theme = {
     YELLOW: '#FFD166',
     GREEN: '#06D6A0',
     LIGHT_BLUE: '#118AB2',
-
     TEXT: '#363F5F',
     TEXT_LIGHT: '#969CB2',
     TEXT_DARK: '#000000',
+    GREY_LIGHT: '#ececec',
   },
   fonts: {
     THIN: 'Poppins-Thin',

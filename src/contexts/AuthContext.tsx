@@ -1,20 +1,20 @@
 import React, {createContext, useState, ReactNode} from 'react';
-import api from '../services/api';
 import {AxiosResponse} from 'axios';
+import api from '../services/api';
 
-export const AuthContext = createContext<AuthContextDataType>(
+const AuthContext = createContext<AuthContextDataType>(
   {} as AuthContextDataType,
 );
+
+interface AuthProviderProps {
+  children: ReactNode;
+}
 
 interface AuthContextDataType {
   isAuthenticated: boolean;
   user: UserType | null;
   token: string | null;
   signIn: (data: SignInData) => Promise<AxiosResponse<SignInResponse>>;
-}
-
-interface AuthProviderProps {
-  children: ReactNode;
 }
 
 interface SignInData {
@@ -31,7 +31,7 @@ interface SignInResponse {
   };
 }
 
-export const AuthProvider = ({children}: AuthProviderProps) => {
+const AuthProvider = ({children}: AuthProviderProps) => {
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<UserType | null>(null);
 
@@ -55,9 +55,6 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
     setUser(user);
     setToken(plain_text_token);
 
-    // await AsyncStorage.setItem('@qp:token', plain_text_token);
-    // await AsyncStorage.setItem('@qp:user', user.id.toString());
-
     api.defaults.headers.common['Authorization'] = `Bearer ${plain_text_token}`;
   }
 
@@ -73,3 +70,5 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
     </AuthContext.Provider>
   );
 };
+
+export {AuthProvider, AuthContext};

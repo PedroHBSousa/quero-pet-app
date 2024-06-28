@@ -1,3 +1,3 @@
-const config = {BaseUrl: 'http://10.30.2.213/quero-pet-backend/public'};
+const config = {BaseUrl: 'http://192.168.18.3/quero-pet-backend/public'};
 
 export default config;

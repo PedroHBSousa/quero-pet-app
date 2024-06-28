@@ -1,49 +1,59 @@
-import React, { FunctionComponent } from "react";
-import { View, Text } from "react-native";
-import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { BorderlessButton } from "react-native-gesture-handler";
-import { 
-  NavigationProp, 
-  ParamListBase, 
-  useNavigation 
-} from "@react-navigation/native";
+import React, {FunctionComponent} from 'react';
+import {View, Text, ViewStyle, TouchableOpacity} from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {
+  BorderlessButton,
+  BorderlessButtonProps,
+} from 'react-native-gesture-handler';
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from '@react-navigation/native';
 
 import styles from './styles';
-import theme from "../../global/styles/theme";
+import theme from '../../global/styles/theme';
 
 interface HeaderProps {
-    title?: string | null;
-    isDisabledBack?: boolean;
-    onPress?: () => void;
-  }
+  title?: string | null;
+  isDisabledBack?: boolean;
+  onPress?: () => void;
+  backgroundColor?: string;
+  customStyles?: ViewStyle;
+  buttonStyles?: ViewStyle;
+  iconColor?: string;
+}
 
-const Header: FunctionComponent<HeaderProps>= ({ 
-  title = null, 
+const Header: FunctionComponent<HeaderProps> = ({
+  title = null,
   isDisabledBack = false,
-  onPress
+  backgroundColor = 'transparent',
+  customStyles = {},
+  buttonStyles = {},
+  iconColor = theme.colors.TEXT,
+  onPress,
 }) => {
   const navigation = useNavigation<NavigationProp<ParamListBase>>();
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor}, customStyles]}>
       {title && <Text style={styles.title}>{title}</Text>}
-      
+
       {!isDisabledBack && (
-        <BorderlessButton 
-          style={styles.button}
+        <TouchableOpacity
+          style={[styles.button, buttonStyles]}
           onPress={() => {
             onPress ? onPress() : navigation.goBack();
-          }}
-        >
+          }}>
           <MaterialIcons
             name="keyboard-backspace"
             size={30}
-            color={theme.colors.TEXT}
+            color={iconColor}
           />
-        </BorderlessButton>
+        </TouchableOpacity>
       )}
     </View>
-  )
-}
+  );
+};
 
 export default Header;

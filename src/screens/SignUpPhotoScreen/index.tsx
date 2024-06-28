@@ -18,7 +18,7 @@ import {FormikProps} from 'formik';
 import ImagePickerModal from '../../components/ImagePickerModal';
 import {requestCameraPermission} from '../../utils/permissionUtils';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../../routes/types/navigation';
+import {RootStackParamList} from '../../routes/types/types';
 
 type SignUpAddressScreen = {
   navigation: NativeStackNavigationProp<

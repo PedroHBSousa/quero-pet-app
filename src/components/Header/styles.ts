@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 import theme from '../../global/styles/theme';
 
@@ -20,8 +20,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 22.5,
     padding: 2.5,
-    borderWidth: 1,
-  }
+    // borderWidth: 1,
+  },
 });
 
 export default styles;

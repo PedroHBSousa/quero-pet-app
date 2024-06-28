@@ -4,4 +4,7 @@ export type RootStackParamList = {
   SignUpAddressScreen: undefined;
   SignUpPhotoScreen: undefined;
   HomeScreen: undefined;
+  PetProfileScreen: undefined;
+  UserProfileScreen: undefined;
+  AdoptionRequestScreen: undefined;
 };
