@@ -7,18 +7,18 @@ import {
   SafeAreaView,
   Image,
 } from 'react-native';
-import {Formik} from 'formik';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {Formik, FormikProps} from 'formik';
+
 import styles from './styles';
 import theme from '../../global/styles/theme';
 import Header from '../../components/Header';
 import Button from '../../components/Button';
-import {FormikProps} from 'formik';
 import ImagePickerModal from '../../components/ImagePickerModal';
 import {requestCameraPermission} from '../../utils/permissionUtils';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../../routes/types/types';
+import {RootStackParamList} from '../../routes/types';
 
 type SignUpAddressScreen = {
   navigation: NativeStackNavigationProp<

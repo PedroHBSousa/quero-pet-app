@@ -1,44 +1,44 @@
+import {useState, useRef} from 'react';
 import {View, Text, StatusBar, Keyboard} from 'react-native';
 import {Masks} from 'react-native-mask-input';
-import styles from './styles';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView} from 'react-native-gesture-handler';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {Formik, FormikProps} from 'formik';
+import * as Yup from 'yup';
+
+import styles from './styles';
 import theme from '../../global/styles/theme';
 import Input from '../../components/Formik/Input';
-import InputSex from '../../components/Formik/InputSex';
 import InputPassword from '../../components/Formik/InputPassword';
 import Header from '../../components/Header';
 import InputMask from '../../components/Formik/InputMask';
-import {Formik, FormikProps} from 'formik';
 import Button from '../../components/Button';
-import {useState, useRef} from 'react';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../../routes/types/types';
-import * as Yup from 'yup';
+import {RootStackParamList} from '../../routes/types';
 import {setValidationErrors} from '../../utils/yupUtils';
 
 const userSchema = Yup.object().shape({
   name: Yup.string().required('Nome é obrigatório'),
   email: Yup.string().email('E-mail inválido').required('E-mail é obrigatório'),
   cpf: Yup.string().required('CPF é obrigatório'),
-  sex: Yup.string().required('Sexo é obrigatório'),
-  birth: Yup.string().required('Data de nascimento é obrigatória'),
+  birth_date: Yup.string().required('Data de nascimento é obrigatória'),
   password: Yup.string()
     .min(6, 'A senha deve ter no mínimo 6 caracteres')
     .required('Senha é obrigatória'),
   confirm_password: Yup.string()
     .oneOf([Yup.ref('password')], 'As senhas devem ser iguais')
     .required('Confirmação de senha é obrigatória'),
+  phone: Yup.string().required('Telefone é obrigatório'),
 });
 
-interface FormikValues {
-  name: string;
-  cpf: string;
-  birth: string;
+export interface SubmitSignUpValues {
+  email: string;
   password: string;
   confirm_password: string;
-  sex: string;
-  email: string;
+  name: string;
+  cpf: string;
+  birth_date: string;
+  phone: string;
 }
 
 type SignUpScreenProp = {
@@ -46,23 +46,23 @@ type SignUpScreenProp = {
 };
 
 function SignUpScreen({navigation}: SignUpScreenProp) {
-  const formRef = useRef<FormikProps<FormikValues>>(null);
+  const formRef = useRef<FormikProps<SubmitSignUpValues>>(null);
   const scrollRef = useRef(null);
 
   const [isLoading, setIsLoading] = useState(false);
 
-  function onSubmit(values: FormikValues) {
+  function onSubmit(values: SubmitSignUpValues) {
     setIsLoading(true);
-
     try {
       userSchema.validateSync(values, {abortEarly: false});
       Keyboard.dismiss();
 
       const data = {
         ...values,
-        birth: values.birth.split('/').reverse().join('-'),
+        birth_date: values.birth_date.split('/').reverse().join('-'),
       };
-      navigation.navigate('SignUpAddressScreen');
+
+      navigation.navigate('SignUpAddressScreen', data);
     } catch (errors) {
       if (errors instanceof Yup.ValidationError) {
         setValidationErrors(formRef as any, errors);
@@ -99,13 +99,13 @@ function SignUpScreen({navigation}: SignUpScreenProp) {
               validateOnChange={false}
               validateOnBlur={false}
               initialValues={{
+                name: '',
                 cpf: '',
-                birth: '',
+                birth_date: '',
                 password: '',
-                sex: '',
                 confirm_password: '',
                 email: '',
-                name: '',
+                phone: '',
               }}>
               {({
                 handleChange,
@@ -149,11 +149,22 @@ function SignUpScreen({navigation}: SignUpScreenProp) {
                   <InputMask
                     mask={Masks.DATE_DDMMYYYY}
                     label={'Data de nascimento'}
-                    value={values.birth}
-                    onChangeText={handleChange('birth')}
-                    error={errors.birth ?? undefined}
-                    onBlur={handleBlur('birth')}
+                    value={values.birth_date}
+                    onChangeText={handleChange('birth_date')}
+                    error={errors.birth_date ?? undefined}
+                    onBlur={handleBlur('birth_date')}
                     placeholder={'Digite sua data de nascimento'}
+                    keyboardType="numeric"
+                  />
+
+                  <InputMask
+                    mask={Masks.BRL_PHONE}
+                    label={'Telefone'}
+                    placeholder={'Digite seu telefone'}
+                    value={values.phone}
+                    error={errors.phone ?? undefined}
+                    onChangeText={handleChange('phone')}
+                    onBlur={handleBlur('phone')}
                     keyboardType="numeric"
                   />
                   <InputPassword
@@ -171,12 +182,6 @@ function SignUpScreen({navigation}: SignUpScreenProp) {
                     error={errors.confirm_password ?? undefined}
                     onChangeText={handleChange('confirm_password')}
                     onBlur={handleBlur('confirm_password')}
-                  />
-                  <InputSex
-                    label={'Sexo'}
-                    style={{marginTop: 15}}
-                    value={values.sex}
-                    formRef={formRef}
                   />
                   <Button
                     isLoading={isLoading}

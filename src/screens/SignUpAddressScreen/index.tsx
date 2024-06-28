@@ -8,18 +8,19 @@ import {
   ActivityIndicator,
   Keyboard,
 } from 'react-native';
-import styles from './styles';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../../routes/types/types';
 import {Formik, FormikProps} from 'formik';
+import {Masks} from 'react-native-mask-input';
+import axios from 'axios';
+import * as Yup from 'yup';
+
+import styles from './styles';
+import {RootStackParamList} from '../../routes/types';
 import Button from '../../components/Button';
 import Header from '../../components/Header';
 import theme from '../../global/styles/theme';
 import Input from '../../components/Formik/Input';
 import InputMask from '../../components/Formik/InputMask';
-import {Masks} from 'react-native-mask-input';
-import axios from 'axios';
-import * as Yup from 'yup';
 import {setValidationErrors} from '../../utils/yupUtils';
 
 const schema = Yup.object().shape({
@@ -31,7 +32,7 @@ const schema = Yup.object().shape({
   number: Yup.string().required('O número é obrigatório'),
 });
 
-interface FormikValues {
+interface SubmitSignUpAddressValues {
   zip_code: string;
   state: string;
   city: string;
@@ -49,15 +50,13 @@ type SignUpAddressScreen = {
 };
 
 function SignUpAddressScreen({navigation}: SignUpAddressScreen) {
+  const [isLoading, setIsLoading] = useState(false);
   const [isLoadingAddress, setIsLoadingAddress] = useState(false);
 
-  const formRef = useRef<FormikProps<FormikValues>>(null);
-
+  const formRef = useRef<FormikProps<SubmitSignUpAddressValues>>(null);
   const scrollRef = useRef(null);
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  function onSubmit(values: FormikValues) {
+  function onSubmit(values: SubmitSignUpAddressValues) {
     setIsLoading(true);
     try {
       schema.validateSync(values, {abortEarly: false});
@@ -110,7 +109,6 @@ function SignUpAddressScreen({navigation}: SignUpAddressScreen) {
           barStyle="dark-content"
           backgroundColor={theme.colors.BACKGROUND}
         />
-
         <View style={styles.main}>
           <View>
             <Text style={styles.titleXl}>Adicione seu endereço.</Text>

@@ -1,7 +1,9 @@
+import {SubmitSignUpValues} from '../screens/SignUpScreen';
+
 export type RootStackParamList = {
   SignInScreen: undefined;
   SignUpScreen: undefined;
-  SignUpAddressScreen: undefined;
+  SignUpAddressScreen: SubmitSignUpValues;
   SignUpPhotoScreen: undefined;
   HomeScreen: undefined;
   PetProfileScreen: undefined;
