@@ -82,7 +82,7 @@ const UserProfileScreen = () => {
             <View
               style={{
                 flex: 1,
-                paddingHorizontal: 25,
+
                 justifyContent: 'space-between',
                 paddingTop: 25,
               }}>
@@ -142,20 +142,34 @@ const UserProfileScreen = () => {
                 />
               </View>
 
-              <Input
-                label={'Nome completo'}
-                placeholder={'Digite seu nome'}
-                value={values.name}
-                error={errors.name ?? undefined}
-                // onBlur={handleBlur('name')}
-                // onChangeText={handleChange('name')}
-              />
+              <View style={{paddingHorizontal: 20}}>
+                <Input
+                  label={'Nome completo'}
+                  placeholder={'Digite seu nome'}
+                  value={values.name}
+                  error={errors.name ?? undefined}
+                  // onBlur={handleBlur('name')}
+                  // onChangeText={handleChange('name')}
+                />
+                <Input
+                  label={'Nome completo'}
+                  placeholder={'Digite seu nome'}
+                  value={values.name}
+                  error={errors.name ?? undefined}
+                  // onBlur={handleBlur('name')}
+                  // onChangeText={handleChange('name')}
+                />
+              </View>
 
-              <View>
+              <View style={{paddingHorizontal: 100}}>
                 <Button
                   isLoading={isLoading}
-                  title="Realizar cadastro"
-                  style={{marginBottom: 100}}
+                  title="Salvar Alterações"
+                  style={{
+                    marginBottom: 100,
+                    alignItems: 'center',
+                    height: 50,
+                  }}
                   onPress={() => {
                     if (!isLoading) {
                       handleSubmit();

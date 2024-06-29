@@ -33,6 +33,14 @@ interface FormikValues {
     type: string;
     name: string;
   };
+} // Compare this snippet from src/screens/SignUpPhotoScreen/index.tsx:
+
+interface FormikValues {
+  photo: {
+    uri: string;
+    type: string;
+    name: string;
+  };
 }
 
 function SignUpPhotoScreen({navigation}: SignUpAddressScreen) {
