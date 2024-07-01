@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     marginTop: -30,
     position: 'relative',
+    paddingBottom: 100,
   },
   infomartionItemContainer: {
     flexDirection: 'row',

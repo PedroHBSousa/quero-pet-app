@@ -1,4 +1,4 @@
-import {useState, useRef} from 'react';
+import {useState, useRef, useContext} from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,9 @@ import {
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {useRoute, RouteProp} from '@react-navigation/native';
 import {Formik, FormikProps} from 'formik';
+import * as Yup from 'yup';
 
 import styles from './styles';
 import theme from '../../global/styles/theme';
@@ -19,6 +21,9 @@ import Button from '../../components/Button';
 import ImagePickerModal from '../../components/ImagePickerModal';
 import {requestCameraPermission} from '../../utils/permissionUtils';
 import {RootStackParamList} from '../../routes/types';
+import {AuthContext} from '../../contexts/AuthContext';
+import {setValidationErrors} from '../../utils/yupUtils';
+import Toast from '../../utils/toastUtils';
 
 type SignUpAddressScreen = {
   navigation: NativeStackNavigationProp<
@@ -27,15 +32,7 @@ type SignUpAddressScreen = {
   >;
 };
 
-interface FormikValues {
-  photo: {
-    uri: string;
-    type: string;
-    name: string;
-  };
-} // Compare this snippet from src/screens/SignUpPhotoScreen/index.tsx:
-
-interface FormikValues {
+export interface SubmitSignUpPhotoValues {
   photo: {
     uri: string;
     type: string;
@@ -43,15 +40,45 @@ interface FormikValues {
   };
 }
 
+const schema = Yup.object().shape({
+  photo: Yup.object().shape({
+    uri: Yup.string().required('A foto é obrigatória'),
+  }),
+});
+
 function SignUpPhotoScreen({navigation}: SignUpAddressScreen) {
   const [isLoading, setIsLoading] = useState(false);
   const [isVisiblePhotoModal, setIsVisiblePhotoModal] = useState(false);
 
-  const formRef = useRef<FormikProps<FormikValues>>(null);
+  const route = useRoute<RouteProp<RootStackParamList, 'SignUpPhotoScreen'>>();
+  const params = route.params;
+
+  const formRef = useRef<FormikProps<SubmitSignUpPhotoValues>>(null);
   const scrollRef = useRef(null);
 
-  async function onSubmit(values: FormikValues) {
+  const {signUp} = useContext(AuthContext);
+
+  async function onSubmit(values: SubmitSignUpPhotoValues) {
     setIsLoading(true);
+    try {
+      schema.validateSync(values, {abortEarly: false});
+      await signUp({
+        ...params,
+        ...values,
+      });
+      Toast.show('Cadastro realizado com sucesso!');
+      navigation.navigate('SignInScreen');
+    } catch (errors) {
+      if (errors instanceof Yup.ValidationError) {
+        setValidationErrors(formRef, errors);
+      }
+      (scrollRef.current as ScrollView | null)?.scrollTo({
+        y: 0,
+        animated: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   function handlePickImage() {

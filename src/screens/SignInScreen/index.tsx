@@ -11,6 +11,7 @@ import Logotipo from '../../assets/svg/Logotipo.svg';
 import {RootStackParamList} from '../../routes/types';
 import {AuthContext} from '../../contexts/AuthContext';
 import {Formik, FormikProps} from 'formik';
+import Toast from '../../utils/toastUtils';
 
 interface FormikValues {
   email: string;
@@ -52,8 +53,8 @@ function SingInScreen(props: SignInScreenProp) {
           innerRef={formRef}
           onSubmit={onSubmit}
           initialValues={{
-            email: 'root@gmail.com',
-            password: 'root',
+            email: '',
+            password: '',
           }}>
           {({values, handleBlur, handleChange, handleSubmit}) => (
             <>

@@ -1,46 +1,28 @@
-interface UserData {
-  name: string;
-  email: string;
-  cpf: string;
-  password: string;
-  confirm_password: string;
-  birth: string;
-  sex: string;
-}
+import {SignUpData} from '../contexts/AuthContext';
 
-interface AddressData {
-  zip_code: string;
-  state: string;
-  city: string;
-  neighborhood: string;
-  street: string;
-  number: string;
-  complement?: string;
-}
-
-interface FormDataSignUp {
-  user: UserData;
-  address: AddressData;
-  photo: File;
-}
-
-export const buildFormDataSignUp = (data: FormDataSignUp) => {
+export const buildFormDataSignUp = (data: SignUpData) => {
   const formData = new FormData();
 
-  formData.append('name', data.user.name);
-  formData.append('email', data.user.email);
-  formData.append('cpf', data.user.cpf);
-  formData.append('password', data.user.password);
-  formData.append('confirm_password', data.user.confirm_password);
-  formData.append('birth', data.user.birth);
-  formData.append('sex', data.user.sex);
-  formData.append('zip_code', data.address.zip_code);
-  formData.append('state', data.address.state);
-  formData.append('city', data.address.city);
-  formData.append('neighborhood', data.address.neighborhood);
-  formData.append('street', data.address.street);
-  formData.append('number', data.address.number);
-  formData.append('complement', data.address.complement);
+  const nameSplit = data.name.split(' ');
+  const first_name = nameSplit[0];
+  const last_name = nameSplit[nameSplit.length - 1];
+
+  formData.append('first_name', first_name);
+  formData.append('last_name', last_name);
+  formData.append('email', data.email);
+  formData.append('cpf', data.cpf);
+  formData.append('password', data.password);
+  formData.append('confirm_password', data.confirm_password);
+  formData.append('birth_date', data.birth_date);
+  formData.append('phone', data.phone);
+  formData.append('zip_code', data.zip_code);
+  formData.append('state', data.state);
+  formData.append('city', data.city);
+  formData.append('neighborhood', data.neighborhood);
+  formData.append('street', data.street);
+  formData.append('number', data.number);
+  formData.append('complement', data.complement);
+  formData.append('country', 'Brasil');
   formData.append('photo', data.photo);
 
   return formData;

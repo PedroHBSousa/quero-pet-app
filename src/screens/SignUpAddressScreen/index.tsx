@@ -11,8 +11,9 @@ import {
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {Formik, FormikProps} from 'formik';
 import {Masks} from 'react-native-mask-input';
-import axios from 'axios';
+import {useRoute, RouteProp} from '@react-navigation/native';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 import styles from './styles';
 import {RootStackParamList} from '../../routes/types';
@@ -32,7 +33,7 @@ const schema = Yup.object().shape({
   number: Yup.string().required('O número é obrigatório'),
 });
 
-interface SubmitSignUpAddressValues {
+export interface SubmitSignUpAddressValues {
   zip_code: string;
   state: string;
   city: string;
@@ -53,6 +54,10 @@ function SignUpAddressScreen({navigation}: SignUpAddressScreen) {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingAddress, setIsLoadingAddress] = useState(false);
 
+  const route =
+    useRoute<RouteProp<RootStackParamList, 'SignUpAddressScreen'>>();
+  const params = route.params;
+
   const formRef = useRef<FormikProps<SubmitSignUpAddressValues>>(null);
   const scrollRef = useRef(null);
 
@@ -60,15 +65,15 @@ function SignUpAddressScreen({navigation}: SignUpAddressScreen) {
     setIsLoading(true);
     try {
       schema.validateSync(values, {abortEarly: false});
-
       Keyboard.dismiss();
-
-      navigation.navigate('SignUpPhotoScreen');
+      navigation.navigate('SignUpPhotoScreen', {
+        ...params,
+        ...values,
+      });
     } catch (errors) {
       if (errors instanceof Yup.ValidationError) {
         setValidationErrors(formRef as any, errors);
       }
-
       (scrollRef.current as ScrollView | null)?.scrollTo({
         y: 0,
         animated: true,
@@ -80,10 +85,8 @@ function SignUpAddressScreen({navigation}: SignUpAddressScreen) {
 
   async function autoFillAddressByZipCode(text: string) {
     setIsLoadingAddress(true);
-
     try {
       const response = await axios.get(`https://viacep.com.br/ws/${text}/json`);
-
       (formRef.current as any)?.setFieldValue('state', response.data.uf);
       (formRef.current as any)?.setFieldValue('city', response.data.localidade);
       (formRef.current as any)?.setFieldValue(
@@ -146,7 +149,6 @@ function SignUpAddressScreen({navigation}: SignUpAddressScreen) {
                     name="zip_code"
                     onChangeText={(text: string) => {
                       (formRef.current as any)?.setFieldValue('zip_code', text);
-
                       if (text.length === 9 && !isLoadingAddress) {
                         autoFillAddressByZipCode(text.replace('-', ''));
                       }
@@ -225,6 +227,7 @@ function SignUpAddressScreen({navigation}: SignUpAddressScreen) {
                 />
 
                 <Button
+                  isLoading={isLoading}
                   title="Próximo passo"
                   style={{marginTop: 30}}
                   onPress={() => {

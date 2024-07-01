@@ -1,16 +1,34 @@
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {View, Text, Image, ScrollView, TouchableOpacity} from 'react-native';
-import React, {useRef, useState, useEffect} from 'react';
-import {Modalize} from 'react-native-modalize';
-import {Portal} from 'react-native-portalize';
+import {View, Text, Image} from 'react-native';
+import React, {useState, useEffect, useContext} from 'react';
 import Button from '../../components/Button';
 import theme from '../../global/styles/theme';
 import Header from '../../components/Header';
 import styles from './styles';
-import ImagePickerModal from '../../components/ImagePickerModal';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../routes/types';
+import {RouteProp, useRoute} from '@react-navigation/native';
+import config from '../../global/config';
+import {PetContext} from '../../contexts/PetContext';
+import Toast from '../../utils/toastUtils';
 
-const PetProfileScreen = ({navigation}) => {
+interface PetProfileScreenProps {
+  navigation: NativeStackNavigationProp<RootStackParamList, 'PetProfileScreen'>;
+}
+
+const PetProfileScreen = (props: PetProfileScreenProps) => {
+  const {navigation} = props;
+
+  const [isVisible, setIsVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const route = useRoute<RouteProp<RootStackParamList, 'PetProfileScreen'>>();
+  const params = route.params;
+  const pet = params.pet;
+
+  const {adoptPet, orders} = useContext(PetContext);
+  const alreadyAdopted = orders.some(order => order.pet.id === pet.id);
+
   useEffect(() => {
     navigation.getParent()?.setOptions({
       tabBarStyle: {display: 'none'},
@@ -33,19 +51,18 @@ const PetProfileScreen = ({navigation}) => {
     };
   }, [navigation]);
 
-  const [isVisible, setIsVisible] = useState(false);
-
-  const modalRef = useRef(null);
-
-  function handleToggleModal() {
-    if (isVisible) {
-      modalRef.current?.close();
-    } else {
-      modalRef.current?.open();
+  async function handleAdopt() {
+    setIsLoading(true);
+    try {
+      await adoptPet(pet.id);
+      Toast.show('Adoção solicitada com sucesso!');
+    } catch (error) {
+      // ...
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsVisible(!isVisible);
   }
+
   return (
     <React.Fragment>
       <Header
@@ -62,41 +79,43 @@ const PetProfileScreen = ({navigation}) => {
       />
       <View style={styles.container}>
         <Image
-          source={require('../../screens/PetProfileScreen/dog.jpg')}
+          source={{uri: `${config.BaseUrl}/storage/${pet.banner}`}}
           style={styles.imagePetProfile}
         />
         <View style={styles.informationContainer}>
-          <Text style={styles.namePetProfile}>Denguinho</Text>
+          <Text style={styles.namePetProfile}>{pet.name}</Text>
           <View style={styles.locationInformation}>
             <MaterialCommunityIcons
               size={30}
               name="map-marker"
               color={'#FFD166'}
             />
-            <Text style={styles.locationName}>Pontal de Santa Marina</Text>
+            <Text style={styles.locationName}>
+              {pet.ong.user.address.street}
+            </Text>
           </View>
           <View style={styles.infomartionItemContainer}>
             <View style={styles.informationItem}>
-              <Text style={styles.titleItem}>Macho</Text>
+              <Text style={styles.titleItem}>
+                {pet.sex === 'M' ? 'Macho' : 'Fêmea'}
+              </Text>
               <Text style={styles.subtitleItem}>Sexo</Text>
             </View>
             <View style={styles.informationItem}>
-              <Text style={styles.titleItem}>Misto</Text>
+              <Text style={styles.titleItem}>{pet.color}</Text>
               <Text style={styles.subtitleItem}>Cor</Text>
             </View>
             <View style={styles.informationItem}>
-              <Text style={styles.titleItem}>2kg</Text>
+              <Text style={styles.titleItem}>{pet.weight}</Text>
               <Text style={styles.subtitleItem}>Peso</Text>
             </View>
             <View style={styles.informationItem}>
-              <Text style={styles.titleItem}>3 Meses</Text>
+              <Text style={styles.titleItem}>{pet.age}</Text>
               <Text style={styles.subtitleItem}>Idade</Text>
             </View>
           </View>
-          <Text style={styles.descriptionPet}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem
-            pellentesque velit donec congue. Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit pellentesque
+          <Text numberOfLines={5} style={styles.descriptionPet}>
+            {pet.description}
           </Text>
         </View>
         <View
@@ -106,37 +125,15 @@ const PetProfileScreen = ({navigation}) => {
             width: '100%',
             bottom: 0,
           }}>
-          <Button onPress={handleToggleModal} title="Adote-me" />
+          {!alreadyAdopted && (
+            <Button
+              isLoading={isLoading}
+              onPress={() => handleAdopt()}
+              title="Adote-me"
+            />
+          )}
         </View>
       </View>
-      <Portal>
-        <Modalize
-          ref={modalRef}
-          adjustToContentHeight={true}
-          scrollViewProps={{showsVerticalScrollIndicator: false}}
-          overlayStyle={{backgroundColor: 'rgba(0, 0, 0, 0.5)'}}
-          onClose={() => {
-            setIsVisible(false);
-          }}>
-          <View style={{padding: 20}}>
-            <Text style={styles.titleModalize}>
-              Para adotar o Denguinho, você precisa enviar os seguintes
-              documentos:
-            </Text>
-            <TouchableOpacity style={styles.uploadContainer}>
-              <MaterialIcons
-                size={35}
-                name="upload-file"
-                color={theme.colors.TESTE}
-              />
-              <Text style={styles.titleUpload}>
-                Certidão de Antecedentes Criminais
-              </Text>
-            </TouchableOpacity>
-            <Button title="Solicitar Adoção" />
-          </View>
-        </Modalize>
-      </Portal>
     </React.Fragment>
   );
 };

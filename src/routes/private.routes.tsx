@@ -91,7 +91,7 @@ export function PrivateRoutes() {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Perfil"
         component={UserProfileScreen}
         options={{
@@ -103,7 +103,7 @@ export function PrivateRoutes() {
             />
           ),
         }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 }

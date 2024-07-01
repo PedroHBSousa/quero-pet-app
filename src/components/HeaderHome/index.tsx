@@ -2,8 +2,7 @@ import {View, Text, TouchableOpacity, Image} from 'react-native';
 import styles from './styles';
 import {useContext} from 'react';
 import {AuthContext} from '../../contexts/AuthContext';
-
-const profileImage = require('../../components/HeaderHome/teste.png');
+import config from '../../global/config';
 
 const HeaderHome: React.FC = () => {
   const {user} = useContext(AuthContext);
@@ -12,7 +11,10 @@ const HeaderHome: React.FC = () => {
       <Text style={styles.nameProfile}>
         Olá, {user?.information.first_name}
       </Text>
-      <Image source={profileImage} style={styles.profileImage} />
+      <Image
+        source={{uri: `${config.BaseUrl}/storage/users/${user?.photo_path}`}}
+        style={styles.profileImage}
+      />
     </View>
   );
 };

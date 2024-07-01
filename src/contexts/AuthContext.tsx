@@ -1,6 +1,11 @@
 import React, {createContext, useState, ReactNode} from 'react';
 import {AxiosResponse} from 'axios';
 import api from '../services/api';
+import {buildFormDataSignUp} from '../utils/authUtils';
+import {SubmitSignUpValues} from '../screens/SignUpScreen';
+import {SubmitSignUpAddressValues} from '../screens/SignUpAddressScreen';
+import {SubmitSignUpPhotoValues} from '../screens/SignUpPhotoScreen';
+import {UserType} from '../interfaces';
 
 const AuthContext = createContext<AuthContextDataType>(
   {} as AuthContextDataType,
@@ -15,12 +20,17 @@ interface AuthContextDataType {
   user: UserType | null;
   token: string | null;
   signIn: (data: SignInData) => Promise<AxiosResponse<SignInResponse>>;
+  signUp: (data: SignUpData) => Promise<AxiosResponse<SignUpResponse>>;
 }
 
 interface SignInData {
   email: string;
   password: string;
 }
+
+export type SignUpData = SubmitSignUpValues &
+  SubmitSignUpAddressValues &
+  SubmitSignUpPhotoValues;
 
 interface SignInResponse {
   data: {
@@ -29,6 +39,10 @@ interface SignInResponse {
     created_at: string;
     updated_at: string;
   };
+}
+
+interface SignUpResponse {
+  data: UserType;
 }
 
 const AuthProvider = ({children}: AuthProviderProps) => {
@@ -58,10 +72,27 @@ const AuthProvider = ({children}: AuthProviderProps) => {
     api.defaults.headers.common['Authorization'] = `Bearer ${plain_text_token}`;
   }
 
+  async function signUp(data: SignUpData) {
+    try {
+      const formData = buildFormDataSignUp(data);
+
+      const response = await api.post('/adopters', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
         signIn,
+        signUp,
         user,
         token,
         isAuthenticated: token ? true : false,

@@ -41,11 +41,13 @@ export interface SubmitSignUpValues {
   phone: string;
 }
 
-type SignUpScreenProp = {
+interface SignUpScreenProps {
   navigation: NativeStackNavigationProp<RootStackParamList, 'SignUpScreen'>;
-};
+}
 
-function SignUpScreen({navigation}: SignUpScreenProp) {
+function SignUpScreen(props: SignUpScreenProps) {
+  const {navigation} = props;
+
   const formRef = useRef<FormikProps<SubmitSignUpValues>>(null);
   const scrollRef = useRef(null);
 
@@ -57,17 +59,14 @@ function SignUpScreen({navigation}: SignUpScreenProp) {
       userSchema.validateSync(values, {abortEarly: false});
       Keyboard.dismiss();
 
-      const data = {
+      navigation.navigate('SignUpAddressScreen', {
         ...values,
         birth_date: values.birth_date.split('/').reverse().join('-'),
-      };
-
-      navigation.navigate('SignUpAddressScreen', data);
+      });
     } catch (errors) {
       if (errors instanceof Yup.ValidationError) {
         setValidationErrors(formRef as any, errors);
       }
-
       (scrollRef.current as ScrollView | null)?.scrollTo({
         y: 0,
         animated: true,
@@ -107,14 +106,7 @@ function SignUpScreen({navigation}: SignUpScreenProp) {
                 email: '',
                 phone: '',
               }}>
-              {({
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                values,
-                errors,
-                setFieldValue,
-              }) => (
+              {({handleChange, handleBlur, handleSubmit, values, errors}) => (
                 <>
                   <Input
                     label={'E-mail'}
@@ -167,6 +159,7 @@ function SignUpScreen({navigation}: SignUpScreenProp) {
                     onBlur={handleBlur('phone')}
                     keyboardType="numeric"
                   />
+
                   <InputPassword
                     label={'Senha'}
                     placeholder={'Digite sua senha'}
@@ -175,6 +168,7 @@ function SignUpScreen({navigation}: SignUpScreenProp) {
                     error={errors.password ?? undefined}
                     onBlur={handleBlur('password')}
                   />
+
                   <InputPassword
                     label={'Confirmar senha'}
                     placeholder={'Confirme sua senha'}
@@ -183,6 +177,7 @@ function SignUpScreen({navigation}: SignUpScreenProp) {
                     onChangeText={handleChange('confirm_password')}
                     onBlur={handleBlur('confirm_password')}
                   />
+
                   <Button
                     isLoading={isLoading}
                     title={'Próximo passo'}

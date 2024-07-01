@@ -1,20 +1,27 @@
 import * as Yup from 'yup';
-import { FormikProps, FormikValues } from 'formik';
+import {FormikProps} from 'formik';
 
-interface ValidationError {
-  path: string;
-  message: string;
-}
+type NestedErrorsType = {[key: string]: string};
 
 export const setValidationErrors = (
-  formRef: React.RefObject<FormikProps<FormikValues>>,
-  errors: Yup.ValidationError
+  formRef: React.RefObject<FormikProps<any>>,
+  errors: Yup.ValidationError,
 ) => {
-  const validationErrors: { [key: string]: string } = {};
+  const validationErrors: NestedErrorsType = {};
 
-  errors.inner.forEach((error) => {
+  errors.inner.forEach(error => {
     if (error.path) {
-      validationErrors[error.path] = error.message;
+      const path = error.path.split('.');
+      let nested: any = validationErrors;
+
+      for (let i = 0; i < path.length - 1; i++) {
+        if (!nested[path[i]]) {
+          nested[path[i]] = {};
+        }
+        nested = nested[path[i]];
+      }
+
+      nested[path[path.length - 1]] = error.message;
     }
   });
 
@@ -22,10 +29,20 @@ export const setValidationErrors = (
 };
 
 export const setValidationError = (
-  formRef: React.RefObject<FormikProps<FormikValues>>,
-  error: ValidationError
+  formRef: React.RefObject<FormikProps<any>>,
+  error: Yup.ValidationError,
 ) => {
   if (error.path && error.message) {
-    formRef.current?.setFieldError(error.path, error.message);
+    const path = error.path.split('.');
+    let nested: any = formRef.current?.errors;
+
+    for (let i = 0; i < path.length - 1; i++) {
+      if (!nested[path[i]]) {
+        nested[path[i]] = {};
+      }
+      nested = nested[path[i]];
+    }
+
+    nested[path[path.length - 1]] = error.message;
   }
 };

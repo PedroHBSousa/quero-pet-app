@@ -17,6 +17,8 @@ const styles = StyleSheet.create({
   cardImage: {
     width: 200,
     height: 200,
+    borderTopLeftRadius: 11,
+    borderTopRightRadius: 11,
   },
   cardTitle: {
     fontSize: 18,

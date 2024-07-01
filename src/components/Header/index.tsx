@@ -1,5 +1,5 @@
 import React, {FunctionComponent} from 'react';
-import {View, Text, ViewStyle, TouchableOpacity} from 'react-native';
+import {View, Text, ViewStyle, TouchableOpacity, TextStyle} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   BorderlessButton,
@@ -22,6 +22,7 @@ interface HeaderProps {
   customStyles?: ViewStyle;
   buttonStyles?: ViewStyle;
   iconColor?: string;
+  customText?: TextStyle;
 }
 
 const Header: FunctionComponent<HeaderProps> = ({
@@ -30,6 +31,7 @@ const Header: FunctionComponent<HeaderProps> = ({
   backgroundColor = 'transparent',
   customStyles = {},
   buttonStyles = {},
+  customText = {},
   iconColor = theme.colors.TEXT,
   onPress,
 }) => {
@@ -37,7 +39,7 @@ const Header: FunctionComponent<HeaderProps> = ({
 
   return (
     <View style={[styles.container, {backgroundColor}, customStyles]}>
-      {title && <Text style={styles.title}>{title}</Text>}
+      {title && <Text style={[styles.title, customText]}>{title}</Text>}
 
       {!isDisabledBack && (
         <TouchableOpacity
